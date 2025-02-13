@@ -30,7 +30,7 @@ const Footer = styled.footer`
     justify-self: center;
     padding: 5%;
 `
-const Navbutton = styled.button`
+const Navbutton = styled(Link)`
     all: unset;
     cursor: pointer;
     height: auto;
@@ -79,7 +79,7 @@ const Home: React.FC = () => {
                         <p>Be informed of trendy updates</p>
                     </div>
                 </Navbutton>
-                <Navbutton>
+                <Navbutton to="/bmi" as >
                     <div class="content">
                         <img src={BMI} alt="bmi"/>
                         <p>Know your Body Mass Index</p>
