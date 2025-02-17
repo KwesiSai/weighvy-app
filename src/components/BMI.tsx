@@ -1,6 +1,10 @@
 import React from "react";
 import Bimage from "../assets/bmi.jpg";
 import styled from "styled-components";
+import { useState } from 'react';
+
+const pageColorWine = "rgba(173, 23, 68, 0.747)";
+const pageColorGray = "rgba(196, 188, 187, 0.1)";
 
 const MainContainer = styled.div`
     display:grid;
@@ -42,9 +46,27 @@ const CalculateSection = styled.section`
     }
     
     form input:focus{
-        border: 2px solid rgba(173, 23, 68, 0.747);
+        border: 2px solid ${pageColorWine};
         border-radius: 10px;
         outline: none;
+    }
+    form button{
+        height: 45px;
+        width: 60%;
+        align-self: center;
+        margin-top: 5%;
+        outline:none;
+        border: none;
+        background-color: ${pageColorWine};
+        padding: 10px;
+        color: white;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 15px;
+        font-weight: 1000;
+    }
+    form button:hover{
+        background-color: gray;
     }
 
     form label{
@@ -58,6 +80,25 @@ const DisplayContainer = styled.div`
 `
 
 const  BMI: React.FC = () => {
+    const [isSubmitted, setIsSubmitted] = useState(false);
+    const [heightValue, setHeightValue] = useState("0");
+    const [weightValue, setWeightValue] = useState("0");
+    const [bodyMassIndex, setBodyMassIndex] = useState(0);
+
+    const handleHeightChange  = (event: React.ChangeEvent<HTMLInputElement>) => {
+        let value = event.target.value.replace(/[eE]/g, "");
+        setHeightValue(value);
+    }
+    const handleWeightChange  = (event: React.ChangeEvent<HTMLInputElement>) => {
+        let value = event.target.value.replace(/[eE]/g, "");
+        setWeightValue(value);
+    }
+    const handleSubmitForm = (event: React.ChangeEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        let value = Number(weightValue)/Number(heightValue)*Number(heightValue);
+        setBodyMassIndex(value);
+        setIsSubmitted(true);
+    }
     return (
         <MainContainer>
             <LogoSection>
@@ -66,9 +107,10 @@ const  BMI: React.FC = () => {
             <CalculateSection>
                 <form>
                     <label for="height"> Enter your height in M :</label>
-                    <input type="number" id="height" name="height"/>
+                    <input type="number" id="height" name="height" onChange={handleHeightChange} value={heightValue}/>
                     <label for="weight">Enter your weight in KG :</label>
-                    <input type="number" id="weight" name="height"/>
+                    <input type="number" id="weight" name="height" onChange={handleWeightChange} value={weightValue}/>
+                    <button onClick={handleSubmitForm}>Calculate</button>
                 </form>
                 <DisplayContainer>
                     something to display
