@@ -81,8 +81,8 @@ const DisplayContainer = styled.div`
 
 const  BMI: React.FC = () => {
     const [isSubmitted, setIsSubmitted] = useState(false);
-    const [heightValue, setHeightValue] = useState("0");
-    const [weightValue, setWeightValue] = useState("0");
+    const [heightValue, setHeightValue] = useState("");
+    const [weightValue, setWeightValue] = useState("");
     const [bodyMassIndex, setBodyMassIndex] = useState(0);
 
     const handleHeightChange  = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,14 +95,22 @@ const  BMI: React.FC = () => {
     }
     const handleSubmitForm = (event: React.ChangeEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        let value = Number(weightValue)/Number(heightValue)*Number(heightValue);
+        let value = Math.floor(Number(weightValue)/(Number(heightValue)*Number(heightValue)));
         setBodyMassIndex(value);
         setIsSubmitted(true);
+        setHeightValue("");
+        setWeightValue("");
     }
     return (
         <MainContainer>
             <LogoSection>
-                <img src={Bimage} alt="bmi"/>
+                {!isSubmitted ?(
+                    <img src={Bimage} alt="bmi"/>
+                ):(
+                    <div>
+                        {bodyMassIndex}
+                    </div>
+                )}
             </LogoSection>
             <CalculateSection>
                 <form>
@@ -110,7 +118,7 @@ const  BMI: React.FC = () => {
                     <input type="number" id="height" name="height" onChange={handleHeightChange} value={heightValue}/>
                     <label for="weight">Enter your weight in KG :</label>
                     <input type="number" id="weight" name="height" onChange={handleWeightChange} value={weightValue}/>
-                    <button onClick={handleSubmitForm}>Calculate</button>
+                    <button type="submit" onClick={handleSubmitForm}>Calculate</button>
                 </form>
                 <DisplayContainer>
                     something to display
