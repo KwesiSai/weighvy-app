@@ -2,6 +2,7 @@ import React from "react";
 import Bimage from "../assets/bmi.jpg";
 import styled from "styled-components";
 import { useState } from 'react';
+import { AiOutlineCloseCircle } from "react-icons/ai";
 
 const pageColorWine = "rgba(173, 23, 68, 0.747)";
 const pageColorGray = "rgba(196, 188, 187, 0.1)";
@@ -16,6 +17,11 @@ const LogoSection = styled.section`
     display: flex;
     flex-direction: column;
     padding: 0 0 0 10%;
+    div{
+        font-size: 1000%;
+        align-self: center;
+        font-weight: 700;
+    }
 
     img{
         height: auto;
@@ -74,9 +80,12 @@ const CalculateSection = styled.section`
         margin-bottom: 3%;
         font-size: 120%;
     }
+
 `
 const DisplayContainer = styled.div`
     justify-self: center;
+    color: red;
+    font-weight: 500;
 `
 
 const  BMI: React.FC = () => {
@@ -84,6 +93,8 @@ const  BMI: React.FC = () => {
     const [heightValue, setHeightValue] = useState("");
     const [weightValue, setWeightValue] = useState("");
     const [bodyMassIndex, setBodyMassIndex] = useState(0);
+    const [inputError, setInputError] = useState(false);
+
 
     const handleHeightChange  = (event: React.ChangeEvent<HTMLInputElement>) => {
         let value = event.target.value.replace(/[eE]/g, "");
@@ -95,11 +106,16 @@ const  BMI: React.FC = () => {
     }
     const handleSubmitForm = (event: React.ChangeEvent<HTMLButtonElement>) => {
         event.preventDefault();
+        if(!heightValue || !weightValue){
+            setInputError(true);
+            return;
+        }
         let value = Math.floor(Number(weightValue)/(Number(heightValue)*Number(heightValue)));
         setBodyMassIndex(value);
         setIsSubmitted(true);
         setHeightValue("");
         setWeightValue("");
+        setInputError(false);
     }
     return (
         <MainContainer>
@@ -107,9 +123,14 @@ const  BMI: React.FC = () => {
                 {!isSubmitted ?(
                     <img src={Bimage} alt="bmi"/>
                 ):(
+                    <>
                     <div>
                         {bodyMassIndex}
                     </div>
+                    <p>
+                     Your Body Mass Index
+                    </p>
+                    </>
                 )}
             </LogoSection>
             <CalculateSection>
@@ -121,7 +142,12 @@ const  BMI: React.FC = () => {
                     <button type="submit" onClick={handleSubmitForm}>Calculate</button>
                 </form>
                 <DisplayContainer>
-                    something to display
+                    {inputError && 
+                    <>
+                    <AiOutlineCloseCircle/>
+                    <span>Please provide input values!</span>
+                    </>
+                    }
                 </DisplayContainer>
             </CalculateSection>
         </MainContainer>
