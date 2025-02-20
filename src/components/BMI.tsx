@@ -2,6 +2,7 @@ import React from "react";
 import Bimage from "../assets/bmi.jpg";
 import styled from "styled-components";
 import { useState } from 'react';
+import { useEffect } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 
 const pageColorWine = "rgba(173, 23, 68, 0.747)";
@@ -32,7 +33,6 @@ const CalculateSection = styled.section`
     margin-left: 15%;
     margin-right: 5%;
     width: 70%;
-    
     form{
         display: flex;
         flex-direction: column;
@@ -86,6 +86,12 @@ const DisplayContainer = styled.div`
     justify-self: center;
     color: red;
     font-weight: 500;
+    display: flex;
+    align-items: center;
+    
+    span{
+    padding-left: 10px;
+    }
 `
 
 const  BMI: React.FC = () => {
@@ -94,6 +100,14 @@ const  BMI: React.FC = () => {
     const [weightValue, setWeightValue] = useState("");
     const [bodyMassIndex, setBodyMassIndex] = useState(0);
     const [inputError, setInputError] = useState(false);
+    useEffect(() => {
+        if (inputError) {
+            const timer = setTimeout(() => {
+                setInputError(false); // Clear error after 3 seconds
+            }, 3000);
+            return () => clearTimeout(timer); // Cleanup on re-render
+        }
+    }, [inputError]);
 
 
     const handleHeightChange  = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -144,7 +158,7 @@ const  BMI: React.FC = () => {
                 <DisplayContainer>
                     {inputError && 
                     <>
-                    <AiOutlineCloseCircle/>
+                    <AiOutlineCloseCircle size={30}/>
                     <span>Please provide input values!</span>
                     </>
                     }
