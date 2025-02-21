@@ -3,7 +3,10 @@ import Bimage from "../assets/bmi.jpg";
 import styled from "styled-components";
 import { useState } from 'react';
 import { useEffect } from "react";
-import { AiOutlineCloseCircle } from "react-icons/ai";
+import { AiOutlineCloseCircle, AiTwotoneFrown, AiTwotoneMeh } from "react-icons/ai";
+import { AiTwotoneSmile } from "react-icons/ai";
+import { AiOutlineMeh } from "react-icons/ai";
+import { AiOutlineFrown } from "react-icons/ai";
 
 const pageColorWine = "rgba(173, 23, 68, 0.747)";
 const pageColorGray = "rgba(196, 188, 187, 0.1)";
@@ -14,14 +17,46 @@ const MainContainer = styled.div`
     margin-top: 10%;
     margin-left: -5%;
 `
+const Title = styled.span`
+    color: ${pageColorWine};
+    align-self: center;
+    font-weight: 500;
+    font-size: 30px;
+    margin-top: -10%;
+`
 const LogoSection = styled.section`
     display: flex;
     flex-direction: column;
     padding: 0 0 0 10%;
-    div{
+    div:first-of-type{
         font-size: 1000%;
         align-self: center;
         font-weight: 700;
+    
+        padding: 20px 60px;
+        margin-top: 6%;
+        color: #333444;
+    }
+    .healthy{
+        border: 5px solid green;
+        border-radius: 12%;
+    }
+    .unhealthy{
+        border: 5px solid red;
+        border-radius: 12%;
+    }
+    div:not(:first-of-type){
+        align-self: center;
+        margin-top: 5%;
+        font-weight: 700;
+        font-size: 28px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        
+    }
+    P{
+    padding-right: 10px;
     }
 
     img{
@@ -138,12 +173,28 @@ const  BMI: React.FC = () => {
                     <img src={Bimage} alt="bmi"/>
                 ):(
                     <>
-                    <div>
+                    <Title>
+                        Body Mass Index
+                    </Title>
+                    <div className={bodyMassIndex < 25 && bodyMassIndex > 18 ? "healthy" : "unhealthy"}>
                         {bodyMassIndex}
                     </div>
-                    <p>
-                     Your Body Mass Index
-                    </p>
+                    {bodyMassIndex < 18 && 
+                        <div>
+                            <p>You are underweight</p>
+                            <AiTwotoneFrown size={50} />
+                        </div>}
+                    {bodyMassIndex > 18 && bodyMassIndex < 25 && 
+                        <div>
+                            <p>Your weight is healthy</p>
+                            <AiTwotoneSmile size={50} />
+                        </div>
+                    }
+                    {bodyMassIndex > 25 && 
+                    <div>
+                        <p>You are overweight</p>
+                        <AiTwotoneMeh size={50}/>
+                    </div>}
                     </>
                 )}
             </LogoSection>
